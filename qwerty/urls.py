@@ -4,5 +4,6 @@ from qwerty import views
 
 urlpatterns = [
     path('', views.task_list),
+    path('task_create/', views.task_create),
 
 ]

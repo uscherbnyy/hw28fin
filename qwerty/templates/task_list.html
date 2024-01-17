@@ -9,10 +9,10 @@
   <div>
     <h3>{{ task.task_name }}</h3>
     <p>{{ task.description }}</p>
-    <p>Исполнитель: {{ task.executor.username }}</p>
+    <p>Исполнитель: {{ task.assignee.name }}</p>
     <p>Статус выполнения: {{ task.status }}</p>
     <p>Дата создания: {{ task.created_date }}</p>
-    <p>Дата завершения: {{ task.completion_date }}</p>
+    <p>Дата завершения: {{ task.due_date }}</p>
   </div>
 {% endfor %}
 </body>

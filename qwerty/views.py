@@ -1,6 +1,7 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
+from qwerty.forms import TaskForm
 from qwerty.models import Task
 
 # Create your views here.
@@ -18,3 +19,21 @@ def task_list(request):
         'tasks': tasks,
     }
     return render(request, 'task_list.html', context)
+
+
+"""Создайте представление (view) для создания новой задачи. На странице создания задачи пользователь должен ввести
+ название, описание, исполнителя и дату завершения задачи."""
+
+
+def task_create(request):
+    if request.method == "POST":
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    else:
+        form = TaskForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'task_create.html', context)
