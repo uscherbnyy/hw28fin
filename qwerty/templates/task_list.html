@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for task in tasks %}
+  <div>
+    <h3>{{ task.task_name }}</h3>
+    <p>{{ task.description }}</p>
+    <p>Исполнитель: {{ task.executor.username }}</p>
+    <p>Статус выполнения: {{ task.status }}</p>
+    <p>Дата создания: {{ task.created_date }}</p>
+    <p>Дата завершения: {{ task.completion_date }}</p>
+  </div>
+{% endfor %}
+</body>
+</html>
