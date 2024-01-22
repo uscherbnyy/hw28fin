@@ -1,9 +1,11 @@
-from django.forms import ModelForm, TextInput, Textarea, DateInput
+from django.forms import ModelForm, TextInput, Textarea, DateInput, ModelChoiceField
 
-from qwerty.models import Task
+from qwerty.models import Task, User
 
 
 class TaskForm(ModelForm):
+    assignee = ModelChoiceField(queryset=User.objects.all())
+
     class Meta:
         model = Task
         fields = ['task_name', 'description', 'assignee', 'due_date']
