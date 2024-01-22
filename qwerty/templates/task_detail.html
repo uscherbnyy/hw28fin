@@ -5,10 +5,18 @@
     <title>Title</title>
 </head>
 <body>
-<h1>{{ task.title }}</h1>
+<h1>{{ task.task_name }}</h1>
 <p>Описание: {{ task.description }}</p>
 <p>Исполнитель: {{ task.assignee }}</p>
 <p>Статус выполнения: {{ task.status }}</p>
 
+<form method="POST" action="{% url 'task_detail' task_id=task.id %}">
+  {% csrf_token %}
+  <select name="status">
+    <option value="В процессе">В процессе</option>
+    <option value="Завершено">Завершено</option>
+  </select>
+  <button type="submit">Обновить статус</button>
+</form>
 </body>
 </html>
