@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from qwerty.forms import TaskForm
 from qwerty.models import Task
@@ -37,3 +37,15 @@ def task_create(request):
         'form': form
     }
     return render(request, 'task_create.html', context)
+
+
+"""Создайте представление (view) для просмотра отдельной задачи. Пользователи должны иметь возможность просматривать
+ детали задачи, включая описание, исполнителя, статус выполнения и комментарии к задаче"""
+
+
+def task_detail(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    context = {
+        'task': task,
+    }
+    return render(request, 'task_detail.html', context)
