@@ -1,6 +1,6 @@
 from django.forms import ModelForm, TextInput, Textarea, DateInput, ModelChoiceField
 
-from qwerty.models import Task, User
+from qwerty.models import Task, User, Comment
 
 
 class TaskForm(ModelForm):
@@ -14,3 +14,9 @@ class TaskForm(ModelForm):
             "description": Textarea(attrs={'placeholder': 'введите описание'}),
             "due_date": DateInput(attrs={'placeholder': 'введите дату окончания'})
         }
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']

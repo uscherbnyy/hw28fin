@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p>{{ parent_comment.text }}</p>
+    <p>Автор: {{ parent_comment.author }}</p>
+    <p>Дата создания: {{ parent_comment.created_at }}</p>
+
+ <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Отправить ответ</button>
+      </form>
+</body>
+</html>

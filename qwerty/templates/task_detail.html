@@ -18,5 +18,33 @@
   </select>
   <button type="submit">Обновить статус</button>
 </form>
+
+<h2>Комментарии:</h2>
+<h2>Добавить комментарий:</h2>
+<form method="POST" action="{% url 'task_detail' task_id=task.id %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Отправить</button>
+</form>
+{% for comment in comments %}
+  <div class="comment">
+    <br>
+    <p>{{ comment.text }}</p>
+    <p>Автор: {{ comment.author }}</p>
+    <p>Дата создания: {{ comment.created_at }}</p>
+    <a href="{% url 'reply_comment' task.id comment.id %}">Ответить</a>
+
+
+    {% for reply in comment.replies.all %}
+      <p>{{ reply.text }}</p>
+      <p>Автор: {{ reply.author }}</p>
+      <p>Дата создания: {{ reply.created_at }}</p>
+
+    {% endfor %}
+  </div>
+{% empty %}
+  <p>Нет комментариев.</p>
+{% endfor %}
+
 </body>
 </html>

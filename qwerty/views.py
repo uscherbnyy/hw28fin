@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-from qwerty.forms import TaskForm
-from qwerty.models import Task
+from qwerty.forms import TaskForm, CommentForm
+from qwerty.models import Task, Comment
 
 # Create your views here.
 
@@ -47,8 +47,13 @@ def task_create(request):
 """
 
 
+"""Реализуйте функциональность добавления комментариев к задачам. Пользователи должны иметь возможность оставлять
+ комментарии к задачам, обсуждать их и отвечать на комментарии других пользователей."""
+
+
 def task_detail(request, task_id):
     task = get_object_or_404(Task, id=task_id)
+    comments = task.comments.filter(parent__isnull=True)
     if request.method == 'POST':
         status = request.POST.get('status')
 
@@ -57,9 +62,42 @@ def task_detail(request, task_id):
             task.save()
             return redirect('task_detail', task_id=task_id)
 
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.task = task
+            comment.author = request.user
+            comment.save()
+            return redirect('task_detail', task_id=task_id)
+    else:
+        form = CommentForm()
     context = {
         'task': task,
+        'comments': comments,
+        'form': form,
     }
     return render(request, 'task_detail.html', context)
 
 
+def reply_comment(request, comment_id, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    parent_comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.task = task
+            comment.parent = parent_comment
+            comment.save()
+            return redirect('task_detail', task_id=task_id)
+    else:
+        form = CommentForm()
+    context = {
+        'task': task,
+        'form': form,
+        'parent_comment': parent_comment
+    }
+    return render(request, 'replay_comment.html', context)
