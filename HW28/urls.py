@@ -17,8 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from qwerty import views
+from qwerty.views import CustomLoginView, profile
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('qwerty.urls')),
-
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('accounts/profile/', profile, name='profile'),
 ]

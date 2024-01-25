@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% load static %}
+{% block content %}
+  <h2>Profile</h2>
+  <h3>Welcome, {{ user.username }}</h3>
+  <p>Email: {{ user.email }}</p>
+<a href="{% url 'logout' %}">Выйти</a>
+  <!-- Другие детали профиля, которые вы хотите отобразить -->
+{% endblock %}
+</body>
+</html>

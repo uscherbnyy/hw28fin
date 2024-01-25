@@ -1,3 +1,6 @@
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -25,6 +28,7 @@ def task_list(request):
  название, описание, исполнителя и дату завершения задачи."""
 
 
+@login_required
 def task_create(request):
     if request.method == "POST":
         form = TaskForm(request.POST)
@@ -46,11 +50,11 @@ def task_create(request):
  статус выполнения задачи на "В процессе" и "Завершено".
 """
 
-
 """Реализуйте функциональность добавления комментариев к задачам. Пользователи должны иметь возможность оставлять
  комментарии к задачам, обсуждать их и отвечать на комментарии других пользователей."""
 
 
+@login_required
 def task_detail(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     comments = task.comments.filter(parent__isnull=True)
@@ -80,6 +84,7 @@ def task_detail(request, task_id):
     return render(request, 'task_detail.html', context)
 
 
+@login_required
 def reply_comment(request, comment_id, task_id):
     task = get_object_or_404(Task, id=task_id)
     parent_comment = get_object_or_404(Comment, id=comment_id)
@@ -101,3 +106,22 @@ def reply_comment(request, comment_id, task_id):
         'parent_comment': parent_comment
     }
     return render(request, 'replay_comment.html', context)
+
+
+"""Добавьте базовую аутентификацию, чтобы только зарегистрированные пользователи могли создавать задачи,
+ назначать исполнителей, изменять статус выполнения и оставлять комментарии."""
+
+
+class CustomLoginView(LoginView):
+    template_name = 'registration/login.html'
+    success_url = '/profile.html/'
+
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html', {'user': request.user})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
