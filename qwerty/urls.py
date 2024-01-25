@@ -2,6 +2,11 @@ from django.urls import path
 
 from qwerty import views
 
+
+"""Настройте маршрутизацию (URL routing) в Django, чтобы пользователи могли получать доступ
+ к каждому представлению (view) по правильному URL"""
+
+
 urlpatterns = [
     path('', views.task_list),
     path('task_create/', views.task_create),
